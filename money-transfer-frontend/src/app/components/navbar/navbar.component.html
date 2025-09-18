@@ -1,0 +1,16 @@
+<p>navbar works!</p>
+<nav class="navbar">
+  <div class="logo">
+    <a routerLink="/">MoneyTransfer</a>
+  </div>
+  <ul class="nav-links">
+    <li *ngIf="isLoggedIn"><a routerLink="/dashboard">Dashboard</a></li>
+    <li *ngIf="isLoggedIn"><a routerLink="/history">History</a></li>
+  </ul>
+  <div class="auth-section">
+    <span *ngIf="isLoggedIn">Hello, {{ username }}</span>
+    <button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+    <a *ngIf="!isLoggedIn" routerLink="/login">Login</a>
+    <a *ngIf="!isLoggedIn" routerLink="/register">Register</a>
+  </div>
+</nav>

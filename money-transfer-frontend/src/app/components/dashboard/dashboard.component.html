@@ -1,0 +1,38 @@
+<div class="dashboard-container">
+  <div class="balance-card">
+    <h3>Your Balance</h3>
+    <p>{{ balance | currency : "USD" }}</p>
+  </div>
+
+  <div class="transfer-card">
+    <h3>Send Money</h3>
+    <form (ngSubmit)="sendTransfer()">
+      <input
+        type="number"
+        placeholder="Recipient User ID"
+        [(ngModel)]="toUserId"
+        name="toUserId"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Amount"
+        [(ngModel)]="amount"
+        name="amount"
+        required
+      />
+      <button type="submit">Send</button>
+    </form>
+    <p class="success" *ngIf="success">{{ success }}</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </div>
+
+  <div class="history-card">
+    <h3>Recent Transfers</h3>
+    <div *ngFor="let t of recentTransfers" class="transfer-item">
+      <span>To: {{ t.toUser.username }}</span>
+      <span>Amount: {{ t.amount | currency : "USD" }}</span>
+      <span>Status: {{ t.status }}</span>
+    </div>
+  </div>
+</div>

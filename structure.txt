@@ -1,0 +1,25 @@
+money-transfer-backend/
+├─ src/main/java/com/example/moneytransfer/
+│  ├─ MoneyTransferApplication.java
+│  ├─ config/
+│  ├─ controller/
+│  │   ├─ AuthController.java (optional)
+│  │   ├─ UserController.java
+│  │   ├─ TransferController.java
+│  │   └─ TransactionEntryController.java
+│  ├─ dto/
+│  │   ├─ UserDto.java
+│  │   ├─ TransferRequestDto.java
+│  │   ├─ TransferResponseDto.java
+│  │   └─ TransactionEntryDto.java
+│  ├─ entity/
+│  │   ├─ User.java
+│  │   ├─ Transfer.java
+│  │   └─ TransactionEntry.java
+│  ├─ repository/
+│  ├─ service/
+│  │   ├─ UserService.java
+│  │   ├─ TransferService.java
+│  │   └─ TransactionEntryService.java
+│  └─ mapper/ (simple mapping helpers)
+└─ pom.xml

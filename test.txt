@@ -1,0 +1,13 @@
+curl -X POST http://localhost:8080/api/users/register \
+ -H "Content-Type: application/json" \
+ -d '{"username":"alice","email":"a@ex.com","password":"secret"}'
+
+
+curl -X POST http://localhost:8080/api/transfers \
+ -H "Content-Type: application/json" \
+ -d '{"fromUserId":1,"toUserId":2,"amount":200.00}'
+
+
+-------Retrieve user head/tail and walk:
+curl http://localhost:8080/api/entries/user/1/tail
+curl http://localhost:8080/api/entries/{entryId}

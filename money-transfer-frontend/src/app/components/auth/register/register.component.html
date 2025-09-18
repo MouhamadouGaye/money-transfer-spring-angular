@@ -1,0 +1,48 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="logo">
+      <h1>MoneyTransfer</h1>
+    </div>
+
+    <h2>{{ title }}</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <input
+          type="text"
+          *ngIf="isRegister"
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </div>
+
+      <button type="submit">{{ isRegister ? "Register" : "Login" }}</button>
+    </form>
+
+    <p class="success" *ngIf="success">{{ success }}</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <p class="switch">
+      {{ isRegister ? "Already have an account?" : "Don't have an account?" }}
+      <a [routerLink]="isRegister ? '/login' : '/register'">
+        {{ isRegister ? "Login" : "Register" }}
+      </a>
+    </p>
+  </div>
+</div>

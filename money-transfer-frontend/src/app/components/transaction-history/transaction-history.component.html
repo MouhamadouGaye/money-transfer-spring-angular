@@ -1,0 +1,19 @@
+<div class="history-container">
+  <h2>Transaction History</h2>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <ul *ngIf="history.length > 0; else noHistory">
+    <li *ngFor="let h of history" class="history-item">
+      <span class="date">{{ h.date | date : "short" }}</span>
+      <span class="details">
+        From: {{ h.fromUserId }} → To: {{ h.toUserId }}
+      </span>
+      <span class="amount">$ {{ h.amount }}</span>
+    </li>
+  </ul>
+
+  <ng-template #noHistory>
+    <p>No history found for this user.</p>
+  </ng-template>
+</div>
