@@ -4,6 +4,8 @@ import com.mgaye.moneytransfer.dto.UserDto;
 import com.mgaye.moneytransfer.entity.User;
 import com.mgaye.moneytransfer.service.UserService;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

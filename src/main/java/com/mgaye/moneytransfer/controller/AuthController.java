@@ -1,82 +1,82 @@
+
 package com.mgaye.moneytransfer.controller;
 
-import java.time.Duration;
-import java.util.Map;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.mgaye.moneytransfer.dto.UserDto;
-import com.mgaye.moneytransfer.dto.request.LoginRequest;
 import com.mgaye.moneytransfer.entity.User;
 import com.mgaye.moneytransfer.security.JwtUtil;
 import com.mgaye.moneytransfer.service.UserService;
-
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") // allow cookies
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AuthController {
 
-    private final AuthenticationManager authManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    public AuthController(AuthenticationManager authManager, UserService userService, JwtUtil jwtUtil) {
-        this.authManager = authManager;
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody LoginRequest request, HttpServletResponse response) {
-        // authenticate credentials
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+        try {
+            if (!userService.checkCredentials(request.getEmail(), request.getPassword())) {
+                throw new RuntimeException("Invalid credentials");
+            }
 
-        // load user
-        User user = userService.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+            User user = userService.getByEmail(request.getEmail());
+            String token = jwtUtil.generateToken(user.getEmail());
 
-        // generate JWT
-        String token = jwtUtil.generateToken(user.getEmail());
+            Cookie cookie = new Cookie("jwt", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(24 * 60 * 60); // 24h
+            response.addCookie(cookie);
 
-        // set JWT in HttpOnly cookie
-        ResponseCookie cookie = ResponseCookie.from("jwt", token)
-                .httpOnly(true)
-                .secure(false) // true in production (HTTPS)
-                .path("/")
-                .maxAge(Duration.ofHours(1))
-                .sameSite("Strict")
-                .build();
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(UserDto.fromEntity(user));
+            return ResponseEntity.ok("Login successful");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletResponse response) {
-        // clear cookie
-        ResponseCookie cookie = ResponseCookie.from("jwt", "")
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(0)
-                .sameSite("Strict")
-                .build();
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return ResponseEntity.ok("Logged out successfully");
+    }
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
+    public static class LoginRequest {
+        private String email;
+        private String password;
+
+        // getters/setters
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }

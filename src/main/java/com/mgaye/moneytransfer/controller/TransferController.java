@@ -31,10 +31,10 @@ public class TransferController {
         return ResponseEntity.ok(transfer);
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(transferService.getUser(id));
-    }
+    // @GetMapping("/users/{id}")
+    // public ResponseEntity<Optional<User>> getUser(@PathVariable Long id) {
+    // return ResponseEntity.ok(transferService.getUser(id));
+    // }
 
     @GetMapping("/transfers/user/{id}")
     public ResponseEntity<List<Transfer>> getTransfersByUser(@PathVariable Long id) {

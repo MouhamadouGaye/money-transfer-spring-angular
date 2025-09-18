@@ -9,8 +9,8 @@
     <form (ngSubmit)="onSubmit()">
       <div class="input-group">
         <input
-          type="text"
           *ngIf="isRegister"
+          type="text"
           placeholder="Username"
           [(ngModel)]="username"
           name="username"

@@ -4,10 +4,18 @@
       <h1>MoneyTransfer</h1>
     </div>
 
-    <h2>Welcome Back</h2>
+    <h2>{{ title }}</h2>
 
     <form (ngSubmit)="onSubmit()">
       <div class="input-group">
+        <input
+          *ngIf="isRegister"
+          type="text"
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
         <input
           type="email"
           placeholder="Email"
@@ -24,13 +32,17 @@
         />
       </div>
 
-      <button type="submit">Login</button>
+      <button type="submit">{{ isRegister ? "Register" : "Login" }}</button>
     </form>
 
+    <p class="success" *ngIf="success">{{ success }}</p>
     <p class="error" *ngIf="error">{{ error }}</p>
 
     <p class="switch">
-      Don't have an account? <a routerLink="/register">Register</a>
+      {{ isRegister ? "Already have an account?" : "Don't have an account?" }}
+      <a [routerLink]="isRegister ? '/login' : '/register'">
+        {{ isRegister ? "Login" : "Register" }}
+      </a>
     </p>
   </div>
 </div>

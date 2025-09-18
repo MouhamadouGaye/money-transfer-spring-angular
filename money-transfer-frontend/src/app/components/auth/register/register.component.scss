@@ -3,45 +3,36 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: radial-gradient(circle at top left, #6a11cb, #2575fc);
+  background-color: #f7f7f7;
   font-family: 'Inter', sans-serif;
 
   .auth-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 3rem 2rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
     width: 380px;
     max-width: 95%;
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.37),
-      inset 0 -4px 8px rgba(255,255,255,0.05),
-      inset 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: #fff;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    color: #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow:
-        0 16px 48px rgba(0,0,0,0.4),
-        inset 0 -4px 8px rgba(255,255,255,0.05),
-        inset 0 4px 8px rgba(0,0,0,0.05);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
     }
 
     .logo h1 {
       font-size: 2rem;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 2rem;
-      font-weight: 900;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
     }
 
     h2 {
       margin-bottom: 2rem;
       font-weight: 600;
+      color: #2c3e50;
     }
 
     .input-group {
@@ -50,21 +41,19 @@
       gap: 1rem;
 
       input {
-        padding: 0.8rem 1rem;
+        padding: 0.75rem 1rem;
         border-radius: 12px;
-        border: none;
-        background: rgba(255,255,255,0.1);
-        color: #fff;
+        border: 1px solid #dcdcdc;
+        background-color: #fafafa;
         font-size: 1rem;
+        color: #2c3e50;
         outline: none;
-        box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1),
-                    inset -2px -2px 5px rgba(0,0,0,0.2);
-        transition: 0.3s;
+        transition: 0.2s;
 
         &:focus {
-          background: rgba(255,255,255,0.15);
-          box-shadow: inset 2px 2px 5px rgba(255,255,255,0.2),
-                      inset -2px -2px 5px rgba(0,0,0,0.3);
+          border-color: #3498db;
+          box-shadow: 0 0 6px rgba(52, 152, 219, 0.2);
+          background-color: #ffffff;
         }
       }
     }
@@ -75,27 +64,27 @@
       padding: 0.8rem;
       border-radius: 12px;
       border: none;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
       font-size: 1rem;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      background-color: #3498db;
       color: #fff;
       transition: 0.3s;
 
       &:hover {
-        background: linear-gradient(135deg, #ff4b2b, #ff416c);
+        background-color: #2980b9;
         transform: translateY(-2px);
       }
     }
 
     .success {
-      color: #4ade80;
+      color: #27ae60;
       margin-top: 1rem;
       font-weight: 500;
     }
 
     .error {
-      color: #ff6b6b;
+      color: #e74c3c;
       margin-top: 1rem;
       font-weight: 500;
     }
@@ -104,11 +93,14 @@
       margin-top: 1.5rem;
       font-size: 0.9rem;
       a {
-        color: #ffd700;
-        font-weight: 600;
+        color: #3498db;
+        font-weight: 500;
         text-decoration: none;
-        transition: 0.3s;
-        &:hover { text-decoration: underline; }
+        transition: 0.2s;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
