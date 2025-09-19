@@ -1,8 +1,13 @@
-// * {
-//     box-sizing: border-box;
-//     margin: 0;
-//     padding: 0;
-// }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    background-color: #2575fc;
+    z-index: 89;
+}
 :host {
   display: block;
   min-height: 100vh;

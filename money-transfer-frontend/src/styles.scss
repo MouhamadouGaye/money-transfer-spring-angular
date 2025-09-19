@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    box-sizing:border-box;
+    margin: 0;
+}
+
+body {
+    overflow-y:hidden;
+}
+
+
+// /* Reset default browser margins/padding */
+// html, body {
+//   margin: 0;
+//   padding: 0;
+//   height: 100%;
+//   width: 100%;
+// }
+
+// /* Ensure Angular root container fills the screen */
+// app-root {
+//   display: block;
+//   height: 100%;
+//   width: 100%;
+// }
