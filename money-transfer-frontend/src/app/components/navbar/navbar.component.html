@@ -1,16 +1,32 @@
-<p>navbar works!</p>
 <nav class="navbar">
   <div class="logo">
-    <a routerLink="/">MoneyTransfer</a>
+    <a routerLink="/">💸 MoneyApp</a>
   </div>
-  <ul class="nav-links">
-    <li *ngIf="isLoggedIn"><a routerLink="/dashboard">Dashboard</a></li>
-    <li *ngIf="isLoggedIn"><a routerLink="/history">History</a></li>
+
+  <!-- Hamburger (mobile only) -->
+  <div class="menu-toggle" (click)="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+
+  <ul class="nav-links" [class.open]="menuOpen">
+    <li *ngIf="isLoggedIn">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li *ngIf="isLoggedIn">
+      <a routerLink="/history" routerLinkActive="active">History</a>
+    </li>
+    <li *ngIf="!isLoggedIn">
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+    </li>
+    <li *ngIf="!isLoggedIn">
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+    </li>
+    <li *ngIf="isLoggedIn">
+      <button class="logout" (click)="logout()">Logout</button>
+    </li>
   </ul>
-  <div class="auth-section">
-    <span *ngIf="isLoggedIn">Hello, {{ username }}</span>
-    <button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
-    <a *ngIf="!isLoggedIn" routerLink="/login">Login</a>
-    <a *ngIf="!isLoggedIn" routerLink="/register">Register</a>
+
+  <div class="auth-section" *ngIf="isLoggedIn">
+    <span class="username">Hello, {{ username }}</span>
   </div>
 </nav>

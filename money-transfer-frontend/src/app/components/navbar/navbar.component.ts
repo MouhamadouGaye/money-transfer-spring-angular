@@ -13,8 +13,18 @@ import { RouterModule, Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   username: string | null = null;
   isLoggedIn = false;
+  menuOpen = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.getCurrentUser().subscribe((user) => {
+      this.isLoggedIn = !!user;
+      this.username = user?.username || '';
+    });
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
 
   ngOnInit() {
     this.authService.getCurrentUser().subscribe({

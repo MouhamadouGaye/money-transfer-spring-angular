@@ -6,11 +6,11 @@ import { HttpClient } from '@angular/common/http';
 export class TransferService {
   constructor(private api: ApiService, private http: HttpClient) {}
 
-  createTransfer(fromUserId: number, toUserId: number, amount: number) {
+  createTransfer(fromUserId: number | null, toUserId: number, amount: number) {
     return this.api.post('/transfers', { fromUserId, toUserId, amount });
   }
 
-  getTransfers(userId: number): Observable<any[]> {
+  getTransfers(userId: number | null): Observable<any[]> {
     return this.http.get<any[]>(
       `http://localhost:8080/api/transfers/user/${userId}`,
       { withCredentials: true }

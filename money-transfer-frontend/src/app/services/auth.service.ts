@@ -46,7 +46,15 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { User } from '../models/User';
 
 @Injectable({ providedIn: 'root' })
@@ -79,13 +87,33 @@ export class AuthService {
 
   getCurrentUser(): Observable<User> {
     return this.http
-      .get<User>('/api/users/me', { withCredentials: true })
+      .get<User>(`${this.apiUrl}/users/me`, { withCredentials: true })
       .pipe(tap((user) => this.currentUserSubject.next(user)));
+  }
+  // auth.service.ts - UPDATE
+  getCurrentUser2(): Observable<User | null> {
+    return this.http
+      .get<User>(`${this.apiUrl}/auth/me`, {
+        withCredentials: true,
+        observe: 'response', // Get full response including status
+      })
+      .pipe(
+        map((response) => {
+          if (response.status === 200 && response.body) {
+            return response.body; // Return user data
+          }
+          return null; // Return null for non-200 responses
+        }),
+        catchError((error) => {
+          console.log('getCurrentUser error status:', error.status);
+          return of(null); // Return null instead of throwing error
+        })
+      );
   }
 
   logout(): Observable<any> {
     return this.http
-      .post('/api/auth/logout', {}, { withCredentials: true })
+      .post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
       .pipe(tap(() => this.currentUserSubject.next(null)));
   }
 

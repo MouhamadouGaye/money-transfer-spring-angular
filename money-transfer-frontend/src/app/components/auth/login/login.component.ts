@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import {
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -25,7 +31,21 @@ export class LoginComponent {
   title = 'Welcome Back';
   isRegister = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  // constructor(private authService: AuthService, private router: Router) {}
+  // login.component.ts - ADD TO CONSTRUCTOR
+  constructor(private router: Router, private authService: AuthService) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        console.log('Navigation starting to:', event.url);
+      }
+      if (event instanceof NavigationEnd) {
+        console.log('Navigation ended to:', event.url);
+      }
+      if (event instanceof NavigationError) {
+        console.error('Navigation error:', event.error);
+      }
+    });
+  }
 
   onSubmit() {
     this.error = '';

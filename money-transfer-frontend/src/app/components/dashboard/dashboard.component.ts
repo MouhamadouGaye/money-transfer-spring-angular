@@ -1,14 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-dashboard',
-//   imports: [],
-//   templateUrl: './dashboard.component.html',
-//   styleUrl: './dashboard.component.scss'
-// })
-// export class DashboardComponent {
-
-// }
 import { Component, OnInit } from '@angular/core';
 import { TransferService } from '../../services/transfer.service';
 import { AuthService } from '../../services/auth.service';
@@ -23,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  balance: number = 0;
+  balance: number | null = 0;
   recentTransfers: any[] = [];
   toUserId: number | null = null;
   amount: number | null = null;
@@ -39,11 +28,23 @@ export class DashboardComponent implements OnInit {
     this.loadUserData();
   }
 
+  // loadUserData2() {
+  //   this.authService.getCurrentUser().subscribe({
+  //     next: (user) => {
+  //       this.balance = user.balance;
+  //       this.loadTransfers(user.id);
+  //     },
+  //   });
+  // } // resee this why the user get red ?
   loadUserData() {
     this.authService.getCurrentUser().subscribe({
       next: (user) => {
-        this.balance = user.balance;
-        this.loadTransfers(user.id);
+        if (user) {
+          this.balance = user.balance;
+          this.loadTransfers(user.id);
+        } else {
+          this.balance = null;
+        }
       },
     });
   }
@@ -62,6 +63,10 @@ export class DashboardComponent implements OnInit {
     this.success = '';
     this.authService.getCurrentUser().subscribe({
       next: (user) => {
+        if (!user) {
+          this.error = 'User not found';
+          return;
+        }
         this.transferService
           .createTransfer(user.id, this.toUserId!, this.amount!)
           .subscribe({
