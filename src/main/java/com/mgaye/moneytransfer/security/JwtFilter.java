@@ -107,10 +107,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class JwtFilter extends OncePerRequestFilter {
+
+    Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
@@ -127,6 +134,8 @@ public class JwtFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String token = null;
+
+        // Extract JWT from cookies
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
@@ -135,12 +144,26 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        if (token != null && jwtUtil.validateToken(token)) {
-            String username = jwtUtil.extractUsername(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null,
-                    userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        if (token != null) {
+            try {
+                String username = jwtUtil.extractUsername(token);
+
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                    if (jwtUtil.validateToken(token, userDetails)) {
+                        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
+
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    }
+                }
+            } catch (Exception e) {
+                // Optionally log invalid/expired token
+                logger.warn("JWT validation failed: {}", e.getMessage());
+            }
         }
 
         filterChain.doFilter(request, response);

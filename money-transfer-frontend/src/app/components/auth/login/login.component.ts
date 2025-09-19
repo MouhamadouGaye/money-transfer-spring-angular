@@ -36,6 +36,26 @@ export class LoginComponent {
       return;
     }
 
+    // this.authService.login(this.email, this.password).subscribe({
+    //   next: () => {
+    //     // this.success = 'Login successful! Redirecting...';
+    //     // setTimeout(() => this.router.navigate(['/dashboard']), 500);
+
+    //     // Immediately fetch user so AuthGuard is satisfied
+    //     this.authService.getCurrentUser().subscribe({
+    //       next: (user) => {
+    //         this.success = 'Login successful! Redirecting...';
+    //         setTimeout(() => this.router.navigate(['/dashboard']), 300);
+    //       },
+    //       error: () => {
+    //         this.error = 'Could not fetch user after login';
+    //       },
+    //     });
+    //   },
+    //   error: (err) => {
+    //     this.error = err.error?.message || 'Login failed';
+    //   },
+    // });
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
         this.success = 'Login successful! Redirecting...';
