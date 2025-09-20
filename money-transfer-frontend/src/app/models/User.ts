@@ -3,5 +3,7 @@ export interface User {
   username: string;
   email: string;
   balance: number;
-  createdAt: string; // ISO date string
+  phoneNumber?: number;
+  createdAt?: string; // ISO date string
+  currency?: 'USD' | 'XOF' | 'EUR';
 }

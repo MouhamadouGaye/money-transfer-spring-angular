@@ -88,11 +88,12 @@ public class UserService implements UserDetailsService {
     // .build();
     // }
 
-    public User createUser(String username, String email, String rawPassword) {
+    public User createUser(String username, String email, String rawPassword, String phoneNumber) {
         User user = User.builder()
                 .username(username)
                 .email(email)
                 .password(passwordEncoder.encode(rawPassword))
+                .phoneNumber(phoneNumber)
                 .balance(BigDecimal.ZERO)
                 .createdAt(Instant.now())
                 .build();

@@ -16,6 +16,7 @@ export class RegisterComponent {
   username = '';
   email = '';
   password = '';
+  phoneNumber = '';
 
   // UI states
   error = '';
@@ -31,13 +32,13 @@ export class RegisterComponent {
     this.error = '';
     this.success = '';
 
-    if (!this.username || !this.email || !this.password) {
+    if (!this.username || !this.email || !this.password || !this.phoneNumber) {
       this.error = 'All fields are required!';
       return;
     }
 
     this.authService
-      .register(this.username, this.email, this.password)
+      .register(this.username, this.email, this.password, this.phoneNumber)
       .subscribe({
         next: () => {
           this.success = 'Registration successful! Redirecting to login...';

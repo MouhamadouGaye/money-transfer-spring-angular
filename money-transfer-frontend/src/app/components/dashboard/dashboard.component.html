@@ -1,86 +1,4 @@
-<!-- <div class="dashboard">
-  <aside class="sidebar">
-    <h2 class="logo">💸 MoneyApp</h2>
-    <nav>
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/history" routerLinkActive="active">Transactions</a>
-      <a routerLink="/profile" routerLinkActive="active">Profile</a>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <section class="card balance">
-      <h3>Current Balance</h3>
-      <p class="amount">{{ balance | currency : "USD" }}</p>
-    </section>
-
-    <section class="card transfer">
-      <h3>Send Money</h3>
-
-      <div class="country-dropdown">
-        <input
-          type="text"
-          placeholder="Select receiver country"
-          [(ngModel)]="selectedCountry"
-          (input)="filterCountries()"
-          name="country"
-          autocomplete="off"
-        />
-        <ul *ngIf="filteredCountries.length > 0" class="dropdown-list">
-          <li *ngFor="let c of filteredCountries" (click)="chooseCountry(c)">
-            {{ c.name }}
-          </li>
-        </ul>
-      </div>
-      <form (ngSubmit)="sendTransfer()">
-        <div class="beneficiary-dropdown">
-          <input
-            type="text"
-            placeholder="Recipient name or phone"
-            [(ngModel)]="selectedBeneficiary"
-            (input)="filterBeneficiaries()"
-            name="beneficiary"
-            required
-            autocomplete="off"
-          />
-          <ul *ngIf="filteredBeneficiaries.length > 0" class="dropdown-list">
-            <li
-              *ngFor="let b of filteredBeneficiaries"
-              (click)="chooseBeneficiary(b)"
-            >
-              {{ b.name }} ({{ b.phone }})
-            </li>
-          </ul>
-        </div>
-
-
-        <div class="currency-inputs">
-          <input
-            placeholder="Amount to send"
-            [(ngModel)]="amount"
-            (input)="updateConvertedAmount()"
-            name="amount"
-            required
-          />
-          <input
-            type="number"
-            placeholder="Amount receiver gets"
-            [value]="convertedAmount"
-            readonly
-          />
-          <span class="currency-label">{{ receiverCurrency }}</span>
-        </div>
-        <button type="submit">Send</button>
-
-        <p class="success" *ngIf="success">{{ success }}</p>
-        <p class="error" *ngIf="error">{{ error }}</p>
-      </form>
-    </section>
-  </main>
-</div> -->
-
 <div class="dashboard">
-  <!-- Sidebar -->
   <aside class="sidebar">
     <h2 class="logo">💸 MoneyApp</h2>
     <nav>
@@ -90,99 +8,35 @@
     </nav>
   </aside>
 
-  <!-- Main Content -->
   <main class="main">
-    <!-- Balance Card -->
     <section class="card balance">
       <h3>Current Balance</h3>
       <p class="amount">{{ balance | currency : "USD" }}</p>
     </section>
 
-    <!-- Transfer Card -->
-    <!-- <section class="card transfer">
-      <h3>Send Money</h3>
-      <form (ngSubmit)="sendTransfer()">
-        <div class="beneficiary-dropdown">
-          <input
-            type="text"
-            placeholder="Recipient name or phone"
-            [(ngModel)]="selectedBeneficiary"
-            (input)="filterBeneficiaries()"
-            name="beneficiary"
-            required
-            autocomplete="off"
-          />
-          <ul *ngIf="filteredBeneficiaries.length > 0" class="dropdown-list">
-            <li
-              *ngFor="let b of filteredBeneficiaries"
-              (click)="chooseBeneficiary(b)"
-            >
-              {{ b.name }} ({{ b.phone }})
-            </li>
-          </ul>
-        </div>
-
-        <div class="country-dropdown">
-          <input
-            type="text"
-            placeholder="Select recipient country"
-            [(ngModel)]="selectedCountry"
-            (input)="filterCountries()"
-            name="country"
-            autocomplete="off"
-          />
-          <ul *ngIf="filteredCountries.length > 0" class="dropdown-list">
-            <li *ngFor="let c of filteredCountries" (click)="chooseCountry(c)">
-              {{ c.name }} ({{ c.currency }})
-            </li>
-          </ul>
-        </div>
-
-        <div class="currency-inputs">
-          <input
-            type="number"
-            placeholder="Amount to send"
-            [(ngModel)]="amount"
-            name="amount"
-            (input)="updateConvertedAmount()"
-            required
-          />
-          <input
-            type="number"
-            placeholder="Amount receiver gets"
-            [value]="convertedAmount"
-            readonly
-          />
-          <span class="currency-display">{{ receiverCurrency }}</span>
-        </div>
-
-        <button type="submit">Send</button>
-
-        <p class="success" *ngIf="success">{{ success }}</p>
-        <p class="error" *ngIf="error">{{ error }}</p>
-      </form>
-    </section> -->
-
     <section class="card transfer">
       <h3>Send Money</h3>
 
+      <!-- 🌍 Destination country selector -->
       <div class="country-dropdown">
         <input
           type="text"
-          placeholder="Select receiver country"
+          placeholder="Select destination country"
           [(ngModel)]="selectedCountry"
           (input)="filterCountries()"
           name="country"
+          required
           autocomplete="off"
         />
         <ul *ngIf="filteredCountries.length > 0" class="dropdown-list">
           <li *ngFor="let c of filteredCountries" (click)="chooseCountry(c)">
-            {{ c.name }}
+            {{ c.name }} — {{ c.currency }}
           </li>
         </ul>
       </div>
+
       <form (ngSubmit)="sendTransfer()">
-        <!-- Beneficiary input with dropdown -->
+        <!-- Beneficiary input -->
         <div class="beneficiary-dropdown">
           <input
             type="text"
@@ -198,28 +52,47 @@
               *ngFor="let b of filteredBeneficiaries"
               (click)="chooseBeneficiary(b)"
             >
-              {{ b.name }} ({{ b.phone }}) — {{ b.currency }}
+              {{ b.name }} ({{ b.phoneNumber }})
             </li>
           </ul>
         </div>
 
-        <!-- Amount and conversion -->
-        <div class="currency-inputs">
+        <!-- Amount input -->
+        <!-- <div class="currency-inputs">
           <input
             type="number"
-            placeholder="Amount to send (USD)"
+            placeholder="Amount to send ({{ senderCurrency }})"
             [(ngModel)]="amount"
             (input)="updateConvertedAmount()"
             name="amount"
             required
           />
+
           <input
-            type="number"
-            placeholder="Amount receiver gets"
+            placeholder="Converted amount in {{ receiverCurrency || '?' }}"
             [value]="convertedAmount"
             readonly
           />
-          <span class="currency-display">Currency: {{ receiverCurrency }}</span>
+          <span> {{ receiverCurrency }} USD </span>
+        </div> -->
+        <div class="currency-inputs">
+          <input
+            type="number"
+            placeholder="Amount to send ({{ senderCurrency }})"
+            [(ngModel)]="amountSender"
+            (input)="updateConvertedAmount('sender')"
+            name="amountSender"
+            required
+          />
+
+          <input
+            type="number"
+            placeholder="Converted amount in {{ receiverCurrency || '?' }}"
+            [(ngModel)]="amountReceiver"
+            (input)="updateConvertedAmount('receiver')"
+            name="amountReceiver"
+          />
+          <span> {{ receiverCurrency }}</span>
         </div>
 
         <button type="submit">Send</button>
@@ -229,7 +102,6 @@
       </form>
     </section>
 
-    <!-- Recent Transfers -->
     <section class="card history">
       <h3>Recent Transfers</h3>
       <div *ngFor="let t of recentTransfers" class="history-item">

@@ -71,10 +71,15 @@ export class AuthService {
     return this.currentUserSubject.asObservable();
   }
 
-  register(username: string, email: string, password: string): Observable<any> {
+  register(
+    username: string,
+    email: string,
+    password: string,
+    phoneNumber: string
+  ): Observable<any> {
     return this.http.post(
       `${this.apiUrl}/users/register`,
-      { username, email, password },
+      { username, email, password, phoneNumber },
       { withCredentials: true }
     );
   }

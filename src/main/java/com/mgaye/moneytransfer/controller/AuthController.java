@@ -66,7 +66,7 @@ public class AuthController {
             Cookie cookie = new Cookie("jwt", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
-            cookie.setSecure(true); // Only over HTTPS
+            cookie.setSecure(false); // Only over HTTPS
             cookie.setAttribute("SameSite", "Strict");
             cookie.setMaxAge(24 * 60 * 60); // 24h
             response.addCookie(cookie);
@@ -84,7 +84,7 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        return ResponseEntity.ok("Logged out successfully");
+        return ResponseEntity.ok().body(Map.of("Error", "Logged out successfully"));
     }
 
     public static class LoginRequest {

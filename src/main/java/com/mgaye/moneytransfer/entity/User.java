@@ -26,6 +26,9 @@ public class User {
     @Column(nullable = false)
     private String password; // store hashed in real app
 
+    @Column(nullable = false, unique = true, length = 20)
+    private String phoneNumber; // 📱 Added phone number
+
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal balance = BigDecimal.ZERO;
 
@@ -36,6 +39,6 @@ public class User {
     @Column(name = "tail_entry_id")
     private Long tailEntryId;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt = Instant.now();
 }

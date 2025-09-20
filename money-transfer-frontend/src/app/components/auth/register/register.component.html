@@ -30,6 +30,13 @@
           name="password"
           required
         />
+        <input
+          type="phoneNumber"
+          placeholder="Phone Number"
+          [(ngModel)]="phoneNumber"
+          name="phoneNumber"
+          required
+        />
       </div>
 
       <button type="submit">{{ isRegister ? "Register" : "Login" }}</button>

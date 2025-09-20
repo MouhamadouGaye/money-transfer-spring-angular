@@ -24,7 +24,11 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody UserDto dto) {
-        User u = userService.createUser(dto.getUsername(), dto.getEmail(), dto.getPassword());
+        User u = userService.createUser(
+                dto.getUsername(),
+                dto.getEmail(),
+                dto.getPassword(),
+                dto.getPhoneNumber());
         UserDto out = UserDto.fromEntity(u);
         out.setPassword(null);
         return ResponseEntity.ok(out);
