@@ -15,18 +15,21 @@ export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   menuOpen = false;
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.authService.getCurrentUser().subscribe((user) => {
-      this.isLoggedIn = !!user;
-      this.username = user?.username || '';
-    });
-  }
-
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+  constructor(private authService: AuthService) {
+    // this.authService.getCurrentUser().subscribe((user) => {
+    //   this.isLoggedIn = !!user;
+    //   this.username = user?.username || '';
+    // });
   }
 
   ngOnInit() {
+    this.authService.currentUser$.subscribe((user) => {
+      this.isLoggedIn = !!user;
+      this.username = user?.username || null;
+    });
+  }
+
+  ngOnInit1() {
     this.authService.getCurrentUser().subscribe({
       next: (user) => {
         this.isLoggedIn = true;
@@ -39,13 +42,21 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  // logout() {
+  //   this.authService.logout().subscribe({
+  //     next: () => {
+  //       this.isLoggedIn = false;
+  //       this.username = null;
+  //       this.router.navigate(['/login']);
+  //     },
+  //   });
+  // }
+
   logout() {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.isLoggedIn = false;
-        this.username = null;
-        this.router.navigate(['/login']);
-      },
-    });
+    this.authService.logout().subscribe();
   }
 }

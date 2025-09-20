@@ -56,14 +56,20 @@ import {
   tap,
 } from 'rxjs';
 import { User } from '../models/User';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
   apiUrl = 'http://localhost:8080/api';
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  // currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.loadCurrentUser();
+  }
+  get currentUser$(): Observable<User | null> {
+    return this.currentUserSubject.asObservable();
+  }
 
   register(username: string, email: string, password: string): Observable<any> {
     return this.http.post(
@@ -90,6 +96,15 @@ export class AuthService {
       .get<User>(`${this.apiUrl}/users/me`, { withCredentials: true })
       .pipe(tap((user) => this.currentUserSubject.next(user)));
   }
+
+  private loadCurrentUser() {
+    this.http
+      .get<User>(`${this.apiUrl}/users/me`, { withCredentials: true })
+      .subscribe({
+        next: (user) => this.currentUserSubject.next(user),
+        error: () => this.currentUserSubject.next(null),
+      });
+  }
   // auth.service.ts - UPDATE
   getCurrentUser2(): Observable<User | null> {
     return this.http
@@ -114,7 +129,12 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
-      .pipe(tap(() => this.currentUserSubject.next(null)));
+      .pipe(
+        tap(() => {
+          this.currentUserSubject.next(null);
+          this.router.navigate(['/login']);
+        })
+      );
   }
 
   isLoggedIn(): boolean {
