@@ -18,7 +18,7 @@
       <h3>Send Money</h3>
 
       <!-- 🌍 Destination country selector -->
-      <div class="country-dropdown">
+      <div class="country-dropdown" (click)="$event.stopPropagation()">
         <input
           type="text"
           placeholder="Select destination country"
@@ -27,8 +27,12 @@
           name="country"
           required
           autocomplete="off"
+          (focus)="dropdownOpen = true"
         />
-        <ul *ngIf="filteredCountries.length > 0" class="dropdown-list">
+        <ul
+          *ngIf="dropdownOpen && filteredCountries.length > 0"
+          class="dropdown-list"
+        >
           <li *ngFor="let c of filteredCountries" (click)="chooseCountry(c)">
             {{ c.name }} — {{ c.currency }}
           </li>
@@ -37,7 +41,7 @@
 
       <form (ngSubmit)="sendTransfer()">
         <!-- Beneficiary input -->
-        <div class="beneficiary-dropdown">
+        <div class="beneficiary-dropdown" (click)="$event.stopPropagation()">
           <input
             type="text"
             placeholder="Recipient name or phone"
@@ -46,8 +50,12 @@
             name="beneficiary"
             required
             autocomplete="off"
+            (focus)="beneficiaryDropdownOpen = true"
           />
-          <ul *ngIf="filteredBeneficiaries.length > 0" class="dropdown-list">
+          <ul
+            *ngIf="beneficiaryDropdownOpen && filteredBeneficiaries.length > 0"
+            class="dropdown-list"
+          >
             <li
               *ngFor="let b of filteredBeneficiaries"
               (click)="chooseBeneficiary(b)"
@@ -87,7 +95,7 @@
 
           <input
             type="number"
-            placeholder="Converted amount in {{ receiverCurrency || '?' }}"
+            placeholder="Converted in ({{ receiverCurrency || '?' }})"
             [(ngModel)]="amountReceiver"
             (input)="updateConvertedAmount('receiver')"
             name="amountReceiver"
